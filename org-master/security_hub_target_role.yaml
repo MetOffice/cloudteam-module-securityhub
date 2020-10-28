@@ -53,8 +53,8 @@ Resources:
               - securityhub:List*
               Effect: Allow
               Resource: !Sub "arn:aws:securityhub:${AWS::Region}:${AWS::AccountId}:hub/default"
-          PolicyName: !Sub ${UniqueName}-CloudTeamSecurityHubAcceptInvitePolicy
-      RoleName: !Sub ${UniqueName}-CloudTeamSecurityHubAcceptInviteRole
+          PolicyName: !Sub ${UniqueName}-SecurityHubAcceptInvitePolicy
+      RoleName: !Sub ${UniqueName}-SecurityHubAcceptInviteRole
       Tags:
         - Key: ServiceCode
           Value: !Ref ServiceCode

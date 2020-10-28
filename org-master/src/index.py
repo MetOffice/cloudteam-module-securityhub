@@ -1,8 +1,10 @@
+import time
 import json
 import boto3
 
 
 SUPPORTED_REGIONS = ["eu-west-1", "eu-west-2", "us-east-1"]
+TARGET_ROLE = "david-SecurityHubAcceptInviteRole"
 
 
 def assume_role(aws_account_number, role_name):
@@ -55,7 +57,8 @@ def get_all_accounts(org_client):
     accounts = []
     for page in iterator:
         for account in page["Accounts"]:
-            accounts.append(account["Id"])
+            acc_entry = {"Id": account["Id"], "Email": account["Email"]}
+            accounts.append(acc_entry)
     return accounts
 
 
@@ -63,10 +66,64 @@ def lambda_handler(event, context):
     org_client = boto3.client("organizations")
     all_org_accounts = get_all_accounts(org_client)
     print(all_org_accounts)
+    master_securityhub_client = {}
+    member_accounts = {}
 
     # Get the current Security Hub Members
-    securityhub_client = boto3.client("securityhub")
     for region in SUPPORTED_REGIONS:
-        member_accounts = get_master_members(securityhub_client, region)
+        master_securityhub_client[region] = boto3.client("securityhub", region=region)
+        member_accounts[region] = get_master_members(securityhub_client, region)
         print(f"Security Hub Member accounts in region {region}")
         print(member_accounts)
+
+    for account in all_org_accounts:
+        for region in SUPPORTED_REGIONS:
+            if account in member_accounts:
+                pass
+            else:
+                master_securityhub_client[region].create_members(
+                    AccountDetails=[
+                        {
+                            "AccountId": account["Id"],
+                            "Email": account["Email"]
+                        }
+                    ]
+                )
+
+                start_time = int(time.time())
+                while account not in member_accounts[region]:
+                    if (int(time.time()) - start_time) > 300:
+                        print("Membership did not show up for account {}, skipping".format(account))
+                        break
+                    time.sleep(5)
+                    member_accounts[region] = get_master_members(
+                        master_securityhub_client[region],
+                        region
+                    )
+
+                start_time = int(time.time())
+                while member_accounts[region][account["Id"]] != "Associated":
+                    if (int(time.time()) - start_time) > 300:
+                        print("Invitation did not show up for account {}, skipping".format(account))
+                        break
+
+                    if member_accounts[region][account["Id"]] == "Created":
+                        master_clients[aws_region].invite_members(
+                            AccountIds=[account["Id"]]
+                        )
+                        print(f"Invited account {account["Id"]} in region {region}")
+
+                    if member_accounts[region][account["Id"]] == "Invited":
+                        target_session = assume_role(account["Id"], TARGET_ROLE)
+                        sh_client = target_session.client("securityhub", region=region)
+                        response = target_session.list_invitations()
+                        invitation_id = None
+                        for invitation in response['Invitations']:
+                            invitation_id = invitation['InvitationId']
+
+                        if invitation_id is not None:
+                            sh_client.accept_invitation(
+                                InvitationId=invitation_id,
+                                MasterId=str(args.master_account)
+                            )
+                            print(f"Accepting Account {account["Id"]} to SecurityHub master in region {region}")
