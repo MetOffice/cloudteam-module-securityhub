@@ -1,0 +1,17 @@
+# Environment
+.venv
+.env
+
+# IDEs
+.idea
+.vscode
+
+# Logs
+*.log
+subscribers_results.json
+
+# Testing
+reports
+
+# Python Cache
+*.pyc
