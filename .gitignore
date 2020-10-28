@@ -8,7 +8,6 @@
 
 # Logs
 *.log
-subscribers_results.json
 
 # Testing
 reports
