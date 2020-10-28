@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Scratch template for enabling security hub
+
+Parameters:
+  ServiceCode:
+    Description: The code attached to the service which costs are attributed to
+    Type: String
+
+  ServiceName:
+    Description: The name of the service which costs are attributed to
+    Type: String
+
+  ServiceOwner:
+    Description: The owners of the service which costs are attributed to
+    Type: String
+
+Resources:
+  CloudTeamHub:
+    Type: "AWS::SecurityHub::Hub"
+    Properties:
+      Tags:
+        ServiceCode: !Ref ServiceCode
+        ServiceName: !Ref ServiceName
+        ServiceOwner: !Ref ServiceOwner
