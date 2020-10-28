@@ -77,7 +77,9 @@ def lambda_handler(event, context):
         print(member_accounts)
 
     for account in all_org_accounts:
+        print(account)
         for region in SUPPORTED_REGIONS:
+            print(region)
             if account in member_accounts:
                 pass
             else:
