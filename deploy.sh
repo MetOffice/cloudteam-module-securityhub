@@ -17,7 +17,7 @@ for REGION in $REGIONS; do
     --stack-name "${UNIQUE_NAME}-security-hub-master-account-stack" \
     --capabilities CAPABILITY_NAMED_IAM \
     --parameter-overrides \
-    Organisation="${ORG}" \
+    UniqueName="${UNIQUE_NAME}" \
     --tags \
     ServiceCode="${SERVICE_CODE}" \
     ServiceName="${SERVICE_NAME}" \
@@ -31,7 +31,8 @@ aws cloudformation deploy \
     --stack-name "${UNIQUE_NAME}-security-hub-target-account-role" \
     --capabilities CAPABILITY_NAMED_IAM \
     --parameter-overrides \
-    Organisation="${ORG}" \
+    OrgId="${ORG_ID}" \
+    UniqueName="${UNIQUE_NAME}" \
     --tags \
     ServiceCode="${SERVICE_CODE}" \
     ServiceName="${SERVICE_NAME}" \
@@ -44,8 +45,6 @@ for REGION in $REGIONS; do
     --template-file target_account/security_hub_target_account.yaml \
     --stack-name "${UNIQUE_NAME}-security-hub-target-account-stack" \
     --capabilities CAPABILITY_NAMED_IAM \
-    --parameter-overrides \
-    Organisation="${ORG}" \
     --tags \
     ServiceCode="${SERVICE_CODE}" \
     ServiceName="${SERVICE_NAME}" \
