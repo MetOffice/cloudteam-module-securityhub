@@ -79,7 +79,7 @@ def lambda_handler(event, context):
 
     # Get the current Security Hub Members
     for region in SUPPORTED_REGIONS:
-        master_securityhub_client[region] = boto3.client("securityhub", region=region)
+        master_securityhub_client[region] = boto3.client("securityhub", region)
         member_accounts[region] = get_master_members(master_securityhub_client, region)
         print(f"Security Hub Member accounts in region {region}")
         print(member_accounts)
