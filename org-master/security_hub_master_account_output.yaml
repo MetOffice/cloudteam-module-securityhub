@@ -50,7 +50,7 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       Code:
-        S3Bucket: david-securityhub-artifacts-bucket-eu-west-1
+        S3Bucket: david-securityhub-artifacts-bucket-us-east-1
         S3Key: e1f27983e6d4feb209f699363c6396c4
       Description: Invites Member Account to Security Hub
       Environment:
