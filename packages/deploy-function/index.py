@@ -135,3 +135,9 @@ def lambda_handler(event, context):
                             MasterId=str(MASTER_ACCOUNT)
                         )
                         print(f"Accepting Account {account_id} to SecurityHub master in region {region}")
+                
+                member_accounts[region] = get_master_members(
+                    master_securityhub_client[region],
+                    region
+                )
+
