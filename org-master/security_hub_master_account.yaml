@@ -37,6 +37,10 @@ Resources:
               - securityhub:List*
               Effect: Allow
               Resource: !Sub "arn:aws:securityhub:${AWS::Region}:${AWS::AccountId}:hub/default"
+            - Action:
+              - organizations:ListAccounts
+              Effect: Allow
+              Resource: "*"
           PolicyName: InviteNewMembersLambdaPolicy
       RoleName: InviteNewMembersLambdaRole
   
