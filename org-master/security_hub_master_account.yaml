@@ -62,8 +62,8 @@ Resources:
   InviteNewMemberAccount:
     Type: "AWS::Lambda::Function"
     Properties:
-      Code: ./src
-      Description: Invites New Member Account to Security Hub
+      Code: packages/deploy-function
+      Description: Invites Member Account to Security Hub
       Handler: index.lambda_handler
       MemorySize: 1024
       Role: !GetAtt InviteNewMemberRole.Arn

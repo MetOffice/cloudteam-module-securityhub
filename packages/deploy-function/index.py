@@ -64,7 +64,13 @@ def get_all_accounts(org_client):
 
 def lambda_handler(event, context):
     org_client = boto3.client("organizations")
-    all_org_accounts = get_all_accounts(org_client)
+    # all_org_accounts = get_all_accounts(org_client)
+    all_org_accounts = [
+        {
+            "Id": "639348004358",
+            "Email": "met-office-aws-test-product-dev@metoffice.gov.uk"
+        }
+    ]
     print(all_org_accounts)
     master_securityhub_client = {}
     member_accounts = {}
