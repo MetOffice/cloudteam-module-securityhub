@@ -99,7 +99,7 @@ def lambda_handler(event, context):
             )
 
             start_time = int(time.time())
-            while account not in member_accounts[region]:
+            while account_id not in member_accounts[region]:
                 if (int(time.time()) - start_time) > 300:
                     print("Membership did not show up for account {}, skipping".format(account))
                     break
