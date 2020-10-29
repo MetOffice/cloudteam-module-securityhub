@@ -2,3 +2,54 @@ ROOT="$(git rev-parse --show-toplevel)"
 source ${ROOT}/env/$1
 
 
+echo "Deploying Master Account Stacks"
+
+for REGION in $REGIONS; do
+    aws cloudformation package \
+    --template-file org-master/security_hub_master_account.yaml \
+    --output-template-file org-master/security_hub_master_account_output.yaml \
+    --s3-bucket "${ARTEFACT_BUCKET_PREFIX}-us-east-1" \
+    --profile ${MASTER_ACCOUNT_PROFILE} \
+    --region "${REGION}"
+
+    aws cloudformation deploy \
+    --template-file org-master/security_hub_master_account_output.yaml \
+    --stack-name "${UNIQUE_NAME}-security-hub-master-account-stack" \
+    --capabilities CAPABILITY_NAMED_IAM \
+    --parameter-overrides \
+    Organisation="${ORG}" \
+    --tags \
+    ServiceCode="${SERVICE_CODE}" \
+    ServiceName="${SERVICE_NAME}" \
+    ServiceOwner="${SERVICE_OWNER}" \
+    --profile ${MASTER_ACCOUNT_PROFILE} \
+    --region "${REGION}"
+done
+
+aws cloudformation deploy \
+    --template-file target_account/security_hub_target_role.yaml \
+    --stack-name "${UNIQUE_NAME}-security-hub-target-account-role" \
+    --capabilities CAPABILITY_NAMED_IAM \
+    --parameter-overrides \
+    Organisation="${ORG}" \
+    --tags \
+    ServiceCode="${SERVICE_CODE}" \
+    ServiceName="${SERVICE_NAME}" \
+    ServiceOwner="${SERVICE_OWNER}" \
+    --profile ${TARGET_ACCOUNT_PROFILE} \
+    --region "eu-west-2"
+
+for REGION in $REGIONS; do
+    aws cloudformation deploy \
+    --template-file target_account/security_hub_target_account.yaml \
+    --stack-name "${UNIQUE_NAME}-security-hub-target-account-stack" \
+    --capabilities CAPABILITY_NAMED_IAM \
+    --parameter-overrides \
+    Organisation="${ORG}" \
+    --tags \
+    ServiceCode="${SERVICE_CODE}" \
+    ServiceName="${SERVICE_NAME}" \
+    ServiceOwner="${SERVICE_OWNER}" \
+    --profile ${TARGET_ACCOUNT_PROFILE} \
+    --region "${REGION}"
+done
