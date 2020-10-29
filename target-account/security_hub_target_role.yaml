@@ -17,9 +17,9 @@ Parameters:
 Mappings:
   Accounts:
     o-t36g6we8ob:
-      Org: "360464095367"
+      Org: "191259708253"
     o-n4q9yibv9t:
-      Org: "005402609678"
+      Org: "148790130844"
   
 Resources:
   SecurityHubAcceptInviteRole:

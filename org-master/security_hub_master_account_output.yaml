@@ -64,6 +64,7 @@ Resources:
         - InviteNewMemberRole
         - Arn
       Runtime: python3.8
+      Timeout: 300
 
 Outputs:
   SecurityHubArn:
