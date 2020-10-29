@@ -41,9 +41,11 @@ Resources:
             - organizations:ListAccounts
             Effect: Allow
             Resource: '*'
-        PolicyName: InviteNewMembersLambdaPolicy
-      RoleName: InviteNewMembersLambdaRole
+        PolicyName:
+          Fn::Sub: ${UniqueName}-InviteNewMembersLambdaPolicy-${AWS::Region}
+      RoleName:
 
+        Fn::Sub: ${UniqueName}-InviteNewMembersLambdaRole-${AWS::Region}
   InviteNewMemberAccount:
     Type: AWS::Lambda::Function
     Properties:

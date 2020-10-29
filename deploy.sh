@@ -26,8 +26,10 @@ for REGION in $REGIONS; do
     --region "${REGION}"
 done
 
+echo "Deploying Target Account Stacks"
+
 aws cloudformation deploy \
-    --template-file target_account/security_hub_target_role.yaml \
+    --template-file target-account/security_hub_target_role.yaml \
     --stack-name "${UNIQUE_NAME}-security-hub-target-account-role" \
     --capabilities CAPABILITY_NAMED_IAM \
     --parameter-overrides \
@@ -42,7 +44,7 @@ aws cloudformation deploy \
 
 for REGION in $REGIONS; do
     aws cloudformation deploy \
-    --template-file target_account/security_hub_target_account.yaml \
+    --template-file target-account/security_hub_target_account.yaml \
     --stack-name "${UNIQUE_NAME}-security-hub-target-account-stack" \
     --capabilities CAPABILITY_NAMED_IAM \
     --tags \
