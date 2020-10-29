@@ -41,6 +41,10 @@ Resources:
               - organizations:ListAccounts
               Effect: Allow
               Resource: "*"
+            - Action:
+              - sts:AssumeRole
+              Effect: Allow
+              Resource: "arn:aws:iam::*:role/david-SecurityHubAcceptInviteRole"
           PolicyName: !Sub ${UniqueName}-InviteNewMembersLambdaPolicy-${AWS::Region}
       RoleName: !Sub ${UniqueName}-InviteNewMembersLambdaRole-${AWS::Region}
   
