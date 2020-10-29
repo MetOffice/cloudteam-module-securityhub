@@ -49,7 +49,7 @@ $ bash ./deploy.sh .env
 ### How to use
 Copy the contents of the deploy.json file into the Test Events interface in the Lambda Console, then run the test in the Lambda.
 
-You can also invoke the Lambda using the CLI
+You can also invoke the Lambda using the CLI, with deploy.json as the payload.
 
 
 ## Authors
