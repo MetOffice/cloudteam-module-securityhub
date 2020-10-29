@@ -8,7 +8,7 @@ for REGION in $REGIONS; do
     aws cloudformation package \
     --template-file org-master/security_hub_master_account.yaml \
     --output-template-file org-master/security_hub_master_account_output.yaml \
-    --s3-bucket "${ARTEFACT_BUCKET_PREFIX}-us-east-1" \
+    --s3-bucket "${ARTEFACT_BUCKET_PREFIX}-${REGION}" \
     --profile ${MASTER_ACCOUNT_PROFILE} \
     --region "${REGION}"
 

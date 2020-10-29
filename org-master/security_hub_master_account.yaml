@@ -47,7 +47,7 @@ Resources:
   InviteNewMemberAccount:
     Type: "AWS::Lambda::Function"
     Properties:
-      Code: packages/deploy-function
+      Code: ./../packages/deploy-function
       Description: Invites Member Account to Security Hub
       Environment:
         Variables:
