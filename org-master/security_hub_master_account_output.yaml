@@ -36,7 +36,7 @@ Resources:
             - securityhub:List*
             Effect: Allow
             Resource:
-              Fn::Sub: arn:aws:securityhub:${AWS::Region}:${AWS::AccountId}:hub/default
+              Fn::Sub: arn:aws:securityhub:*:${AWS::AccountId}:hub/default
           - Action:
             - organizations:ListAccounts
             Effect: Allow
