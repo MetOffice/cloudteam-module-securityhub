@@ -51,10 +51,12 @@ Resources:
     Properties:
       Code:
         S3Bucket: david-securityhub-artifacts-bucket-us-east-1
-        S3Key: e1f27983e6d4feb209f699363c6396c4
+        S3Key: 865b9e224083fe68b2a9fe4157a8ab18
       Description: Invites Member Account to Security Hub
       Environment:
         Variables:
+          MASTER_ACCOUNT:
+            Ref: AWS::AccountId
           TARGET_ROLE:
             Fn::Sub: ${UniqueName}-SecurityHubAcceptInviteRole
       Handler: index.lambda_handler
