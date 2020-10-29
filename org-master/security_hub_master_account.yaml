@@ -2,6 +2,11 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: Scratch template for enabling security hub
 
 Parameters:
+  UniqueName:
+    Default: cloudops
+    Description: A unique prefix given to all of the AWS resources
+    Type: String
+  
   ServiceCode:
     Description: The code attached to the service which costs are attributed to
     Type: String
@@ -64,6 +69,9 @@ Resources:
     Properties:
       Code: packages/deploy-function
       Description: Invites Member Account to Security Hub
+      Environment:
+        Variables:
+          TARGET_ROLE: !Sub ${UniqueName}-SecurityHubAcceptInviteRole
       Handler: index.lambda_handler
       MemorySize: 1024
       Role: !GetAtt InviteNewMemberRole.Arn

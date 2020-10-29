@@ -4,7 +4,7 @@ import boto3
 
 
 SUPPORTED_REGIONS = ["eu-west-1", "eu-west-2", "us-east-1"]
-TARGET_ROLE = "david-SecurityHubAcceptInviteRole"
+TARGET_ROLE = os.envrion["TARGET_ROLE"]
 
 
 def assume_role(aws_account_number, role_name):
