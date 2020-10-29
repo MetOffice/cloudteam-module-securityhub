@@ -84,6 +84,7 @@ def lambda_handler(event, context):
 
     for account in all_org_accounts:
         print(account)
+        account_id = account["Id"]
         for region in SUPPORTED_REGIONS:
             print(region)
             if account in member_accounts:
@@ -92,7 +93,7 @@ def lambda_handler(event, context):
                 master_securityhub_client[region].create_members(
                     AccountDetails=[
                         {
-                            "AccountId": account["Id"],
+                            "AccountId": account_id,
                             "Email": account["Email"]
                         }
                     ]
@@ -110,19 +111,19 @@ def lambda_handler(event, context):
                     )
 
                 start_time = int(time.time())
-                while member_accounts[region][account["Id"]] != "Associated":
+                while member_accounts[region][account_id] != "Associated":
                     if (int(time.time()) - start_time) > 300:
                         print("Invitation did not show up for account {}, skipping".format(account))
                         break
 
-                    if member_accounts[region][account["Id"]] == "Created":
+                    if member_accounts[region][account_id] == "Created":
                         master_clients[aws_region].invite_members(
-                            AccountIds=[account["Id"]]
+                            AccountIds=[account_id]
                         )
-                        print(f"Invited account {account["Id"]} in region {region}")
+                        print(f"Invited account {account_id} in region {region}")
 
-                    if member_accounts[region][account["Id"]] == "Invited":
-                        target_session = assume_role(account["Id"], TARGET_ROLE)
+                    if member_accounts[region][account_id] == "Invited":
+                        target_session = assume_role(account_id, TARGET_ROLE)
                         sh_client = target_session.client("securityhub", region=region)
                         response = target_session.list_invitations()
                         invitation_id = None
@@ -134,4 +135,4 @@ def lambda_handler(event, context):
                                 InvitationId=invitation_id,
                                 MasterId=str(args.master_account)
                             )
-                            print(f"Accepting Account {account["Id"]} to SecurityHub master in region {region}")
+                            print(f"Accepting Account {account_id} to SecurityHub master in region {region}")
