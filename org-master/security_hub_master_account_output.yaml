@@ -41,6 +41,11 @@ Resources:
             - organizations:ListAccounts
             Effect: Allow
             Resource: '*'
+          - Action:
+            - sts:AssumeRole
+            Effect: Allow
+            Resource:
+              Fn::Sub: arn:aws:iam::*:role/${UniqueName}-SecurityHubAcceptInviteRole
         PolicyName:
           Fn::Sub: ${UniqueName}-InviteNewMembersLambdaPolicy-${AWS::Region}
       RoleName:

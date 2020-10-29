@@ -44,7 +44,7 @@ Resources:
             - Action:
               - sts:AssumeRole
               Effect: Allow
-              Resource: "arn:aws:iam::*:role/david-SecurityHubAcceptInviteRole"
+              Resource: !Sub "arn:aws:iam::*:role/${UniqueName}-SecurityHubAcceptInviteRole"
           PolicyName: !Sub ${UniqueName}-InviteNewMembersLambdaPolicy-${AWS::Region}
       RoleName: !Sub ${UniqueName}-InviteNewMembersLambdaRole-${AWS::Region}
   
