@@ -10,11 +10,6 @@ Parameters:
 Resources:
   CloudTeamHub:
     Type: "AWS::SecurityHub::Hub"
-    Properties:
-      Tags:
-        ServiceCode: !Ref ServiceCode
-        ServiceName: !Ref ServiceName
-        ServiceOwner: !Ref ServiceOwner
   
   InviteNewMemberRole:
     Type: "AWS::IAM::Role"
