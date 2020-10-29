@@ -1,10 +1,12 @@
 import time
+import os
 import json
 import boto3
 
 
+MASTER_ACCOUNT = os.environ["MASTER_ACCOUNT"]
 SUPPORTED_REGIONS = ["eu-west-1", "eu-west-2", "us-east-1"]
-TARGET_ROLE = os.envrion["TARGET_ROLE"]
+TARGET_ROLE = os.environ["TARGET_ROLE"]
 
 
 def assume_role(aws_account_number, role_name):
@@ -16,7 +18,7 @@ def assume_role(aws_account_number, role_name):
             role_name
         ),
         RoleSessionName='EnableSecurityHub'
-    ) 
+    )
     # Storing STS credentials
     session = boto3.Session(
         aws_access_key_id=response['Credentials']['AccessKeyId'],
@@ -63,7 +65,7 @@ def get_all_accounts(org_client):
 
 
 def lambda_handler(event, context):
-    org_client = boto3.client("organizations")
+    # org_client = boto3.client("organizations")
     # all_org_accounts = get_all_accounts(org_client)
     all_org_accounts = [
         {
@@ -78,7 +80,7 @@ def lambda_handler(event, context):
     # Get the current Security Hub Members
     for region in SUPPORTED_REGIONS:
         master_securityhub_client[region] = boto3.client("securityhub", region=region)
-        member_accounts[region] = get_master_members(securityhub_client, region)
+        member_accounts[region] = get_master_members(master_securityhub_client, region)
         print(f"Security Hub Member accounts in region {region}")
         print(member_accounts)
 
@@ -117,15 +119,15 @@ def lambda_handler(event, context):
                         break
 
                     if member_accounts[region][account_id] == "Created":
-                        master_clients[aws_region].invite_members(
+                        master_securityhub_client[region].invite_members(
                             AccountIds=[account_id]
                         )
                         print(f"Invited account {account_id} in region {region}")
 
                     if member_accounts[region][account_id] == "Invited":
                         target_session = assume_role(account_id, TARGET_ROLE)
-                        sh_client = target_session.client("securityhub", region=region)
-                        response = target_session.list_invitations()
+                        sh_client = target_session.client("securityhub", region)
+                        response = sh_client.list_invitations()
                         invitation_id = None
                         for invitation in response['Invitations']:
                             invitation_id = invitation['InvitationId']
@@ -133,6 +135,6 @@ def lambda_handler(event, context):
                         if invitation_id is not None:
                             sh_client.accept_invitation(
                                 InvitationId=invitation_id,
-                                MasterId=str(args.master_account)
+                                MasterId=str(MASTER_ACCOUNT)
                             )
                             print(f"Accepting Account {account_id} to SecurityHub master in region {region}")
