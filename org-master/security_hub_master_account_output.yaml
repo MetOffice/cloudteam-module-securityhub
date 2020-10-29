@@ -51,7 +51,7 @@ Resources:
     Properties:
       Code:
         S3Bucket: david-securityhub-artifacts-bucket-us-east-1
-        S3Key: 87272d92957fd8cd973cf638a7ae070f
+        S3Key: 9c5f551fe5262e97cbd93461d8714605
       Description: Invites Member Account to Security Hub
       Environment:
         Variables:
