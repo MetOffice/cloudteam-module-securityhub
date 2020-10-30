@@ -2,6 +2,23 @@ ROOT="$(git rev-parse --show-toplevel)"
 source ${ROOT}/env/$1
 
 
+echo "Deploying Master Account Pre-reqs"
+
+for REGION in $REGIONS; do
+    aws cloudformation deploy \
+    --template-file org-master/regional_pre-reqs.yaml \
+    --stack-name "${UNIQUE_NAME}-security-hub-pre-reqs-stack" \
+    --capabilities CAPABILITY_NAMED_IAM \
+    --parameter-overrides \
+    ArtefectBucketPrefix="${ARTEFACT_BUCKET_PREFIX}" \
+    --tags \
+    ServiceCode="${SERVICE_CODE}" \
+    ServiceName="${SERVICE_NAME}" \
+    ServiceOwner="${SERVICE_OWNER}" \
+    --profile ${MASTER_ACCOUNT_PROFILE} \
+    --region "${REGION}"
+done
+
 echo "Deploying Master Account Stacks"
 
 for REGION in $REGIONS; do

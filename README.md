@@ -39,9 +39,8 @@ UNIQUE_NAME=david
 ```
 
 ### Creating a feature environment
-1. Create three artifact buckets in each of the three regions in the ops central test account of the Test AWS Organisation (148790130844), one in each region
-2. Deploy the CloudFormation stacks using the following deploy script:
-in the ops central test account of the Test AWS Organisation (148790130844):
+1. Deploy the pre-reqs and resources CloudFormation Stacks in the ops central test account of the
+ Test AWS Organisation (148790130844), using the following script:
 ```bash
 $ bash ./deploy.sh .env
 ```

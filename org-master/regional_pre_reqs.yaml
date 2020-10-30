@@ -1,0 +1,14 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: |
+  
+Parameters:
+  ArtefactBucketPrefix:
+    Default: cloudops
+    Description: A unique prefix given to the bucket
+    Type: String
+  
+Resources:
+  ArtifactBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub '${ArtefactBucketPrefix}-${AWS::Region}'
