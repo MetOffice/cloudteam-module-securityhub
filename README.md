@@ -11,7 +11,7 @@
   	<a href="#authors">Authors</a> 
 </p>
 
-More details: **[AWS Security Hub Organisation wide deployment]("https://metoffice.atlassian.net/wiki/spaces/CT/pages/2032632293/AWS+Security+Hub+Organization-wide+Deployment")**
+More details: **[AWS Security Hub Organisation wide deployment](https://metoffice.atlassian.net/wiki/spaces/CT/pages/2032632293/AWS+Security+Hub+Organization-wide+Deployment)**
 
 ## Getting started
 ### Pre-requisites
