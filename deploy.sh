@@ -10,7 +10,7 @@ for REGION in $REGIONS; do
     --stack-name "${UNIQUE_NAME}-security-hub-pre-reqs-stack" \
     --capabilities CAPABILITY_NAMED_IAM \
     --parameter-overrides \
-    ArtefectBucketPrefix="${ARTEFACT_BUCKET_PREFIX}" \
+    ArtefactBucketPrefix="${ARTEFACT_BUCKET_PREFIX}" \
     --tags \
     ServiceCode="${SERVICE_CODE}" \
     ServiceName="${SERVICE_NAME}" \

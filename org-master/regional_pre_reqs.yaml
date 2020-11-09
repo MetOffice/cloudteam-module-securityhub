@@ -3,7 +3,6 @@ Description: |
   
 Parameters:
   ArtefactBucketPrefix:
-    Default: cloudops
     Description: A unique prefix given to the bucket
     Type: String
   
