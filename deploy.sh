@@ -6,7 +6,7 @@ echo "Deploying Master Account Pre-reqs"
 
 for REGION in $REGIONS; do
     aws cloudformation deploy \
-    --template-file org-master/regional_pre-reqs.yaml \
+    --template-file org-master/regional_pre_reqs.yaml \
     --stack-name "${UNIQUE_NAME}-security-hub-pre-reqs-stack" \
     --capabilities CAPABILITY_NAMED_IAM \
     --parameter-overrides \
